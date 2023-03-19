@@ -2,6 +2,7 @@ const form = document.querySelector('#form')
 const taskInput = document.querySelector('#taskInput')
 const tasksList = document.querySelector('#tasksList')
 const emptyList = document.querySelector('#emptyList')
+const clearDone = document.querySelector('#removeDoneTasks')
 
 let tasks = []
 
@@ -15,6 +16,7 @@ checkEmptyList()
 form.addEventListener('submit', addTask)
 tasksList.addEventListener('click', deleateTask)
 tasksList.addEventListener('click', doneTask)
+clearDone.addEventListener('click', deleteDoneTask)
 
 function addTask(event) {
 	event.preventDefault()
@@ -125,3 +127,25 @@ function renderTask(task) {
 
 	tasksList.insertAdjacentHTML('beforeend', taskHTML)
 }
+
+function deleteDoneTask() {
+
+	var doneItems = tasksList.querySelectorAll('li span.task-title--done');
+
+	doneItems.forEach(function (item) {
+		item.parentNode.remove()
+	});
+
+	tasks = tasks.filter((task) => {
+		if (task.done === true) {
+			return false
+		} else {
+			return true
+		}
+	})
+
+	saveToLocalStorage()
+
+	checkEmptyList()
+}
+
